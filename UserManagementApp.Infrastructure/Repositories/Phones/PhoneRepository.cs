@@ -1,11 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UserManagementApp.Domain.Entities.Phones;
-using UserManagementApp.Domain.Entities.Users;
 using UserManagementApp.Domain.Interfaces.Repositories.Phones;
-using UserManagementApp.Domain.Interfaces.Repositories.Users;
 using UserManagementApp.Infrastructure.Context;
 
-namespace UserManagementApp.Infrastructure.Repositories.Users;
+namespace UserManagementApp.Infrastructure.Repositories.Phones;
 
 public class PhoneRepository : Repository<Phone> , IPhoneRepository
 {

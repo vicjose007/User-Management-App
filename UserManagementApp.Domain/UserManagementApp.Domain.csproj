@@ -12,4 +12,9 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\Phones\" />
+    <Folder Include="Entities\Users\" />
+  </ItemGroup>
+
 </Project>

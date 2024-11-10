@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UserManagementApp.Domain.Entities;
 using UserManagementApp.Domain.Entities.Users;
 using UserManagementApp.Domain.Interfaces.Repositories.Users;
 using UserManagementApp.Infrastructure.Context;

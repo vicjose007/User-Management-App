@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using UserManagementApp.Domain.Interfaces.Repositories.Phones;
 using UserManagementApp.Domain.Interfaces.Repositories.Users;
+using UserManagementApp.Infrastructure.Repositories.Phones;
 using UserManagementApp.Infrastructure.Repositories.Users;
 
 namespace UserManagementApp.Infrastructure;
