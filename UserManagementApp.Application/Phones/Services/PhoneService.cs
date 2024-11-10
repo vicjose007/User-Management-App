@@ -45,6 +45,9 @@ public class PhoneService : IPhoneService
     {
         create.Id = Guid.NewGuid().ToString();
 
+        if (string.IsNullOrEmpty(create.Number))
+            throw new Exception("El numero de telefono no debe estar vacio");
+
         await _repository.AddAsync(create, cancellationToken);
 
         return await _repository.SaveChangesAsync(cancellationToken);

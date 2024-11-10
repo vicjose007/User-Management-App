@@ -9,6 +9,7 @@ using UserManagementApp.Application.Users.Interfaces;
 using UserManagementApp.Application.Users.Services.Projections;
 using UserManagementApp.Domain.Enums;
 using UserManagementApp.Domain.Interfaces.Repositories.Users;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace UserManagementApp.Application.Users.Services;
 
@@ -86,10 +87,10 @@ public class UserService : IUserService
         create.Role = Roles.Normal;
 
         create.IsActive = true;
-
         await _repository.AddAsync(create, cancellationToken);
 
-        await AddUserPhonesAsync(create.Id, create.Phones);
+        if (create.Phones != null && create.Phones.Any())
+            await AddUserPhonesAsync(create.Id, create.Phones);
 
         return await _repository.SaveChangesAsync(cancellationToken);
 
@@ -143,7 +144,7 @@ public class UserService : IUserService
         return await _repository.SaveChangesAsync(cancellationToken);
     }
 
-    private async Task AddUserPhonesAsync(string userId, List<CreatePhone> dtos, CancellationToken cancellationToken = default)
+    public async Task AddUserPhonesAsync(string userId, List<CreatePhone> dtos, CancellationToken cancellationToken = default)
     {
         foreach (var phone in dtos)
         {
@@ -153,7 +154,7 @@ public class UserService : IUserService
         }
     }
 
-    private async Task ValidateUserExists(string email, CancellationToken cancellationToken = default)
+    public async Task ValidateUserExists(string email, CancellationToken cancellationToken = default)
     {
         var userExists = await _repository.Queryable().AnyAsync(u => u.Email == email);
 

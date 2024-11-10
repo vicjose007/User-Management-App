@@ -1,4 +1,5 @@
-﻿using UserManagementApp.Application.Users.Dtos;
+﻿using UserManagementApp.Application.Phones.Dtos;
+using UserManagementApp.Application.Users.Dtos;
 using UserManagementApp.Domain.Entities.Users;
 
 namespace UserManagementApp.Application.Users.Interfaces;
@@ -13,4 +14,6 @@ public interface IUserService
     Task<int> DeleteAsync(string id, CancellationToken cancellationToken = default);
     Task ForgotPasswordAsync(string email);
     Task<int> UpdateUserActivationAsync(string id, bool isActive, CancellationToken cancellationToken = default);
+    Task AddUserPhonesAsync(string userId, List<CreatePhone> dtos, CancellationToken cancellationToken = default);
+    Task ValidateUserExists(string email, CancellationToken cancellationToken = default);
 }
