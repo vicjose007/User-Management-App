@@ -22,7 +22,7 @@ public class CreateUser
     [JsonIgnore]
     public bool? IsActive { get; set; }
 
-    public List<CreatePhone> Phones { get; set; }
+    public List<CreatePhone>? Phones { get; set; }
 
     public static implicit operator User(CreateUser create)
     {
