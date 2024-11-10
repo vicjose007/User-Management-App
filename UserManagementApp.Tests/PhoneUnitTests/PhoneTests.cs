@@ -1,5 +1,6 @@
 ﻿using Moq;
 using UserManagementApp.Application.Phones.Dtos;
+using UserManagementApp.Application.Phones.Exceptions;
 using UserManagementApp.Application.Phones.Services;
 using UserManagementApp.Application.Users.Interfaces;
 using UserManagementApp.Domain.Entities.Phones;
@@ -28,7 +29,7 @@ public class PhoneTests
         var handler = new PhoneService(_mockPhoneRepository);
 
         // Act & Assert
-        await Assert.ThrowsAsync<Exception>(() => handler.GetByIdAsync(nonExistentPhoneId));
+        await Assert.ThrowsAsync<PhoneNotFoundException>(() => handler.GetByIdAsync(nonExistentPhoneId));
     }
 
     [Fact]
@@ -46,7 +47,7 @@ public class PhoneTests
         var handler = new PhoneService(_mockPhoneRepository);
 
         // Act
-        await Assert.ThrowsAsync<Exception>(() => handler.AddAsync(createPhone));
+        await Assert.ThrowsAsync<PhoneMustNotBeEmptyException>(() => handler.AddAsync(createPhone));
     }
 
 }
