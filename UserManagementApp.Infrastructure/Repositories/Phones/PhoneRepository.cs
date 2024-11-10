@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UserManagementApp.Application.Phones.Dtos;
+using UserManagementApp.Application.Phones.Services.Projections;
 using UserManagementApp.Domain.Entities.Phones;
 using UserManagementApp.Domain.Interfaces.Repositories.Phones;
 using UserManagementApp.Infrastructure.Context;
@@ -12,9 +14,11 @@ public class PhoneRepository : Repository<Phone> , IPhoneRepository
     {
         _context = context;
     }
-    public async Task<List<Phone>> GetByUserId(string userId, CancellationToken cancellationToken = default)
+    public async Task<IQueryable<Phone>> GetByUserId(string userId, CancellationToken cancellationToken = default)
     {
-        return await _context.Phones.Where(x => x.UserId == userId).ToListAsync();
+        return _context.Phones
+            .Include(x => x.User)
+            .Where(x => x.UserId == userId && x.User != null);
     }
 }
 

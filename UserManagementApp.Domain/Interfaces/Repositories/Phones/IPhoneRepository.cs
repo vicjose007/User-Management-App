@@ -4,5 +4,5 @@ namespace UserManagementApp.Domain.Interfaces.Repositories.Phones;
 
 public interface IPhoneRepository : IRepository<Phone>
 {
-    Task<List<Phone>> GetByUserId(string userId, CancellationToken cancellationToken = default);
+    Task<IQueryable<Phone>> GetByUserId(string userId, CancellationToken cancellationToken = default);
 }
