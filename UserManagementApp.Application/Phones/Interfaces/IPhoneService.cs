@@ -11,4 +11,5 @@ public interface IPhoneService
     Task<int> UpdateAsync(string id, UpdatePhone create, CancellationToken cancellationToken = default);
     Task<int> DeleteAsync(string id, CancellationToken cancellationToken = default);
     Task<List<GetPhone>> GetByUserId(string userId, CancellationToken cancellationToken = default);
+    Task<int> AddUserPhoneAsync(CreateUserPhone create, CancellationToken cancellationToken = default);
 }

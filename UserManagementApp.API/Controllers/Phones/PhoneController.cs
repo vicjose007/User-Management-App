@@ -65,11 +65,11 @@ public class PhoneController : ControllerBase
 
     [Authorize]
     [HttpPost("add-async")]
-    public async Task<IActionResult> AddAsync([FromBody] CreatePhone create, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> AddAsync([FromBody] CreateUserPhone create, CancellationToken cancellationToken = default)
     {
         try
         {
-            await _service.AddAsync(create, cancellationToken);
+            await _service.AddUserPhoneAsync(create, cancellationToken);
 
             return Ok(create);
         }
