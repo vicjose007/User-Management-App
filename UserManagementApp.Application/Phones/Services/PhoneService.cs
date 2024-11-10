@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using UserManagementApp.Application.Phones.Dtos;
+using UserManagementApp.Application.Phones.Exceptions;
 using UserManagementApp.Application.Phones.Services.Projections;
 using UserManagementApp.Application.Users.Interfaces;
 using UserManagementApp.Domain.Entities.Phones;
@@ -30,7 +31,7 @@ public class PhoneService : IPhoneService
             .AsNoTracking()
             .Where(st => st.Id == id)
             .Select(PhoneProjection.GetAll)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new Exception($"No Phone found with id: {id}");
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new PhoneNotFoundException(id);
     }
 
     public async Task<List<GetPhone>> GetByUserId(string userId, CancellationToken cancellationToken = default)
@@ -46,7 +47,7 @@ public class PhoneService : IPhoneService
         create.Id = Guid.NewGuid().ToString();
 
         if (string.IsNullOrEmpty(create.Number))
-            throw new Exception("El numero de telefono no debe estar vacio");
+            throw new PhoneMustNotBeEmptyException();
 
         await _repository.AddAsync(create, cancellationToken);
 
