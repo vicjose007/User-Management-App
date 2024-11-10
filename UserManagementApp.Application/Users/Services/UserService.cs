@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using UserManagementApp.Application.Phones.Dtos;
 using UserManagementApp.Application.Users.Dtos;
+using UserManagementApp.Application.Users.Exceptions;
 using UserManagementApp.Application.Users.Interfaces;
 using UserManagementApp.Application.Users.Services.Projections;
 using UserManagementApp.Domain.Enums;
@@ -39,7 +40,7 @@ public class UserService : IUserService
             .AsNoTracking()
             .Where(st => st.Id == id)
             .Select(UserProjection.GetAll)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new Exception($"Usuario no encontrado con este id: {id}");
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new UserNotFoundException(id);
     }
 
     public async Task<GetUser> GetByUserEmailAsync(string email, CancellationToken cancellationToken = default)
@@ -48,7 +49,7 @@ public class UserService : IUserService
             .AsNoTracking()
             .Where(st => st.Email == email)
             .Select(UserProjection.GetAll)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new Exception($"Usuario no encontrado con este correo: {email}");
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new UserEmailNotFoundException(email);
     }
 
     public async Task<LoginResponse> Login(LoginRequest request, CancellationToken cancellationToken = default)
@@ -57,7 +58,7 @@ public class UserService : IUserService
         var userFind = await _repository.Queryable().Where(u => u.Email == request.Email && u.Password == request.Password).Select(UserProjection.GetAll).FirstOrDefaultAsync();
 
         if (userFind == null)
-            throw new Exception("User is not found");
+            throw new UserDoesNotExistsException();
 
 
         string token = CreateToken(userFind);
@@ -113,7 +114,7 @@ public class UserService : IUserService
         return await _repository.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<int> UpdateUserPasswordAsync(string id, string password, CancellationToken cancellationToken = default)
+    public async Task<string> UpdateUserPasswordAsync(string id, string password, CancellationToken cancellationToken = default)
     {
         var user = await _repository.GetByIdAsync(id);
 
@@ -121,7 +122,9 @@ public class UserService : IUserService
 
         await _repository.UpdateAsync(user, cancellationToken);
 
-        return await _repository.SaveChangesAsync(cancellationToken);
+        await _repository.SaveChangesAsync(cancellationToken);
+
+        return user.Password;
     }
 
     public async Task<int> UpdateUserActivationAsync(string id, bool isActive, CancellationToken cancellationToken = default)
@@ -202,7 +205,7 @@ public class UserService : IUserService
 
     }
 
-    public async Task ForgotPasswordAsync(string email)
+    public async Task<string> ForgotPasswordAsync(string email)
     {
         var user = await GetByUserEmailAsync(email);
 
@@ -213,7 +216,9 @@ public class UserService : IUserService
             Password = GenerateRandomPassword(user.Name, 8)
         };
 
-        await UpdateUserPasswordAsync(user.Id, createUser.Password);
+        var newPassword = await UpdateUserPasswordAsync(user.Id, createUser.Password);
+
+        return newPassword;
     }
 
     public static string GenerateRandomPassword(string name, int length)

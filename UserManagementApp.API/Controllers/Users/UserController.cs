@@ -112,14 +112,13 @@ public class UserController : ControllerBase
         }
     }
 
-    [Authorize]
-    [HttpPost("ForgotPassword")]
+    [HttpPost("forgot-password")]
     public async Task<IActionResult> ForgotPasswordAsync(string email, CancellationToken cancellationToken = default)
     {
         try
         {
-            await _service.ForgotPasswordAsync(email);
-            return Ok();
+            var result = await _service.ForgotPasswordAsync(email);
+            return Ok(result);
         }
         catch (Exception e)
         {
