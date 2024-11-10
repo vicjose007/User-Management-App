@@ -24,9 +24,7 @@ Para iniciar sesión en el sistema, utiliza las siguientes credenciales de admin
 Una vez que inicies sesión, recibirás un Token JWT en la respuesta.
 Para poder autenticarte y acceder a los demás endpoints disponibles en el sistema, es necesario que incluyas este token en el encabezado de autorización como un Bearer Token en Swagger, utilizando el siguiente formato:
 
-    ```json
-    Bearer {token}
-    ```
+ Bearer {token}
     
 ### **Requisitos Adicionales:**
 - Si ejecutas el proyecto en un entorno local, asegúrate de tener **SQL Server** correctamente instalado y configurado.
