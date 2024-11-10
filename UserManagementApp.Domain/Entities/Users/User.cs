@@ -13,5 +13,7 @@ public class User : Entity
 
     public string Password { get; set; }
 
+    public Roles Role { get; set; }
+
     public List<Phone> Phones { get; set; }
 }
