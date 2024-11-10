@@ -19,6 +19,7 @@ public static class UserProjection
             Updated = element.Updated,
             IsActive = element.IsActive,
             LastLogin = element.LastLogin,
+            Password = element.Password,
             Phones = element.Phones.Select(p => new GetPhone
             {
                 Id = p.Id,
@@ -29,6 +30,24 @@ public static class UserProjection
             }).ToList()
 
         };
+
+    public static Expression<Func<User, GetUser>> GetMinorDetails { get; } = element =>
+    new GetUser
+    {
+        Id = element.Id,
+        Name = element.Name,
+        Email = element.Email,
+        Password = element.Password,
+        Phones = element.Phones.Select(p => new GetPhone
+        {
+            Id = p.Id,
+            UserId = p.UserId,
+            CityCode = p.CityCode,
+            ContryCode = p.ContryCode,
+            Number = p.Number,
+        }).ToList()
+
+    };
 
 }
 

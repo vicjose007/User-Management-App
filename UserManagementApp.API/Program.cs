@@ -28,7 +28,9 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 }).AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<CreateUser>())
-.AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<CreatePhone>());
+.AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<CreatePhone>())
+.AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<UpdateUser>())
+.AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<UpdatePhone>());
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
