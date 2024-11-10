@@ -7,7 +7,6 @@ using UserManagementApp.Application.Phones.Dtos;
 using UserManagementApp.Application.Users.Dtos;
 using UserManagementApp.Application.Users.Interfaces;
 using UserManagementApp.Application.Users.Services.Projections;
-using UserManagementApp.Domain.Interfaces.Repositories.Phones;
 using UserManagementApp.Domain.Interfaces.Repositories.Users;
 
 namespace UserManagementApp.Application.Users.Services;
@@ -53,7 +52,7 @@ public class UserService : IUserService
     public async Task<LoginResponse> Login(LoginRequest request, CancellationToken cancellationToken = default)
     {
   
-        var userFind = await _repository.Queryable().Where(u => u.Email == request.Email && u.Password == request.Password).Select(UserProjection.GetAll).FirstAsync();
+        var userFind = await _repository.Queryable().Where(u => u.Email == request.Email && u.Password == request.Password).Select(UserProjection.GetAll).FirstOrDefaultAsync();
 
         if (userFind == null)
             throw new Exception("User is not found");
