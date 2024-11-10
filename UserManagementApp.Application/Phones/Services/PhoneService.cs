@@ -55,6 +55,19 @@ public class PhoneService : IPhoneService
 
     }
 
+    public async Task<int> AddUserPhoneAsync(CreateUserPhone create, CancellationToken cancellationToken = default)
+    {
+        create.Id = Guid.NewGuid().ToString();
+
+        if (string.IsNullOrEmpty(create.Number))
+            throw new PhoneMustNotBeEmptyException();
+
+        await _repository.AddAsync(create, cancellationToken);
+
+        return await _repository.SaveChangesAsync(cancellationToken);
+
+    }
+
 
     public async Task<int> UpdateAsync(string id, UpdatePhone update, CancellationToken cancellationToken = default)
     {

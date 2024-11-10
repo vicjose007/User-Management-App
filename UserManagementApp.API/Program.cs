@@ -29,6 +29,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 }).AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<CreateUser>())
 .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<CreatePhone>())
+.AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<CreateUserPhone>())
 .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<UpdateUser>())
 .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<UpdatePhone>());
 
