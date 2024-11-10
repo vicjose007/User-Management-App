@@ -38,3 +38,18 @@ public class UserValidator : AbstractValidator<CreateUser>
     }
 }
 
+public class UserUpdateValidator : AbstractValidator<UpdateUser>
+{
+    public UserUpdateValidator()
+    {
+        RuleFor(x => x.Name)
+            .NotEmpty().WithMessage("El nombre es obligatorio.")
+            .MinimumLength(3).WithMessage("El nombre no puede ser demasiado corto.")
+            .MaximumLength(50).WithMessage("El nombre no puede ser demasiado largo.");
+
+        RuleFor(x => x.Email)
+            .NotEmpty().WithMessage("El correo electrónico es obligatorio.")
+            .EmailAddress().WithMessage("El correo electrónico no tiene un formato válido.");
+    }
+}
+

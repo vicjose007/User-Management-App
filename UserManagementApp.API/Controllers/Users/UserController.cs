@@ -36,7 +36,7 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
-    [HttpPost("Register")]
+    [HttpPost("register")]
     public async Task<IActionResult> AddAsync([FromBody] CreateUser create, CancellationToken cancellationToken = default)
     {
         try
@@ -52,7 +52,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPost("Login")]
+    [HttpPost("login")]
     public async Task<IActionResult> Login(LoginRequest request, CancellationToken cancellationToken = default)
     {
         try

@@ -39,7 +39,7 @@ public class UserService : IUserService
         return await _repository.Queryable(cancellationToken)
             .AsNoTracking()
             .Where(st => st.Id == id)
-            .Select(UserProjection.GetAll)
+            .Select(UserProjection.GetById)
             .FirstOrDefaultAsync(cancellationToken) ?? throw new UserNotFoundException(id);
     }
 
@@ -48,7 +48,7 @@ public class UserService : IUserService
         return await _repository.Queryable(cancellationToken)
             .AsNoTracking()
             .Where(st => st.Email == email)
-            .Select(UserProjection.GetAll)
+            .Select(UserProjection.GetById)
             .FirstOrDefaultAsync(cancellationToken) ?? throw new UserEmailNotFoundException(email);
     }
 

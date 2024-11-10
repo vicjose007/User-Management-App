@@ -49,7 +49,7 @@ public class PhoneController : ControllerBase
 
     [Authorize]
     [HttpPost("add-async")]
-    public async Task<IActionResult> AddAsync([FromForm] CreatePhone create, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> AddAsync([FromBody] CreatePhone create, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -65,7 +65,7 @@ public class PhoneController : ControllerBase
 
     [Authorize]
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(string id, [FromForm] UpdatePhone update, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> UpdateAsync(string id, [FromBody] UpdatePhone update, CancellationToken cancellationToken = default)
     {
         try
         {
