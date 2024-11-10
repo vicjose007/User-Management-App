@@ -28,8 +28,6 @@ Para poder autenticarte y acceder a los demás endpoints disponibles en el siste
     
 ### **Requisitos Adicionales:**
 - Si ejecutas el proyecto en un entorno local, asegúrate de tener **SQL Server** correctamente instalado y configurado.
-- Si prefieres usar **Docker** para ejecutar el proyecto, asegúrate de contar con **[Docker Desktop](https://www.docker.com/products/docker-desktop)** instalado en tu máquina.
-
 ---
 
 ## **Instrucciones para Clonar el Proyecto**
