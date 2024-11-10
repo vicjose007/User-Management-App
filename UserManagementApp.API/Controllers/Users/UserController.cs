@@ -17,13 +17,14 @@ public class UserController : ControllerBase
         _service = service;
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
     {
         return Ok(await _service.GetAllAsync(cancellationToken));
     }
 
-
+    [Authorize]
     [HttpGet("get-by-id/{id}")]
     public async Task<IActionResult> GetByIdAsync(string id, CancellationToken cancellationToken = default)
     {
@@ -65,6 +66,7 @@ public class UserController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAsync(string id, [FromBody] UpdateUser update, CancellationToken cancellationToken = default)
     {
@@ -79,6 +81,7 @@ public class UserController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(string id, CancellationToken cancellationToken = default)
     {
@@ -93,6 +96,7 @@ public class UserController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPost("ForgotPassword")]
     public async Task<IActionResult> ForgotPasswordAsync(string email, CancellationToken cancellationToken = default)
     {
@@ -104,24 +108,6 @@ public class UserController : ControllerBase
         catch (Exception e)
         {
             return BadRequest(e.Message);
-        }
-    }
-
-
-    private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-    {
-        using (var hmac = new HMACSHA512())
-        {
-            passwordSalt = hmac.Key;
-            passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-        }
-    }
-    private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
-    {
-        using (var hmac = new HMACSHA512(passwordSalt))
-        {
-            var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            return computedHash.SequenceEqual(passwordHash);
         }
     }
 }

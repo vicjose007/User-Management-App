@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UserManagementApp.Application.Phones.Dtos;
 using UserManagementApp.Application.Users.Interfaces;
 
@@ -15,13 +16,14 @@ public class PhoneController : ControllerBase
         _service = service;
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
     {
         return Ok(await _service.GetAllAsync(cancellationToken));
     }
 
-
+    [Authorize]
     [HttpGet("get-by-id/{id}")]
     public async Task<IActionResult> GetByIdAsync(string id, CancellationToken cancellationToken = default)
     {
@@ -33,6 +35,7 @@ public class PhoneController : ControllerBase
         return Ok(phone);
     }
 
+    [Authorize]
     [HttpGet("get-by-userId/{userId}")]
     public async Task<IActionResult> GetByUserId(string userId, CancellationToken cancellationToken = default)
     {
@@ -44,6 +47,7 @@ public class PhoneController : ControllerBase
         return Ok(phone);
     }
 
+    [Authorize]
     [HttpPost("add-async")]
     public async Task<IActionResult> AddAsync([FromForm] CreatePhone create, CancellationToken cancellationToken = default)
     {
@@ -59,6 +63,7 @@ public class PhoneController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAsync(string id, [FromForm] UpdatePhone update, CancellationToken cancellationToken = default)
     {
@@ -73,6 +78,7 @@ public class PhoneController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(string id, CancellationToken cancellationToken = default)
     {
