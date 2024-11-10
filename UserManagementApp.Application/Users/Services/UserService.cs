@@ -3,10 +3,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using UserManagementApp.Application.Phones.Dtos;
 using UserManagementApp.Application.Users.Dtos;
 using UserManagementApp.Application.Users.Interfaces;
 using UserManagementApp.Application.Users.Services.Projections;
-using UserManagementApp.Domain.Entities.Phones;
+using UserManagementApp.Domain.Interfaces.Repositories.Phones;
 using UserManagementApp.Domain.Interfaces.Repositories.Users;
 
 namespace UserManagementApp.Application.Users.Services;
@@ -15,10 +16,13 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _repository;
     private readonly IConfiguration _configuration;
+    private readonly IPhoneService _phoneService;
 
-    public UserService(IUserRepository repository)
+    public UserService(IUserRepository repository, IConfiguration configuration, IPhoneService phoneService)
     { 
         _repository = repository;
+        _configuration = configuration;
+        _phoneService = phoneService;
     }
 
     public async Task<List<GetUser>> GetAllAsync(CancellationToken cancellationToken = default)
@@ -49,7 +53,7 @@ public class UserService : IUserService
     public async Task<LoginResponse> Login(LoginRequest request, CancellationToken cancellationToken = default)
     {
   
-        var userFind = GetAllAsync(cancellationToken).Result.FirstOrDefault(u => u.Email == request.Email && u.Password == request.Password);
+        var userFind = await _repository.Queryable().Where(u => u.Email == request.Email && u.Password == request.Password).Select(UserProjection.GetAll).FirstAsync();
 
         if (userFind == null)
             throw new Exception("User is not found");
@@ -71,9 +75,14 @@ public class UserService : IUserService
     {
         create.Id = Guid.NewGuid().ToString();
 
+        create.Role = Domain.Enums.Roles.Normal;
+
         create.Password = GenerateRandomPassword(create.Name, 6);
 
         await _repository.AddAsync(create, cancellationToken);
+
+        await AddUserPhonesAsync(create.Id, create.Phones);
+
         return await _repository.SaveChangesAsync(cancellationToken);
 
     }
@@ -175,5 +184,14 @@ public class UserService : IUserService
         await UpdateUserPasswordAsync(user.Id, createUser.Password);
     }
 
+    private async Task AddUserPhonesAsync(string userId, List<CreatePhone> dtos, CancellationToken cancellationToken = default)
+    {
+        foreach (var phone in dtos)
+        {
+            phone.UserId = userId;
+
+            await _phoneService.AddAsync(phone, cancellationToken);
+        }
+    }
 }
 

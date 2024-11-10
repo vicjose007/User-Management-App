@@ -1,12 +1,15 @@
-﻿using UserManagementApp.Domain.Entities.Phones;
+﻿using System.Text.Json.Serialization;
+using UserManagementApp.Domain.Entities.Phones;
 
 namespace UserManagementApp.Application.Phones.Dtos;
 
 public class CreatePhone
 {
-    public string Id { get; set; }
+    [JsonIgnore]
+    public string? Id { get; set; } = null!;
 
-    public string UserId { get; set; }
+    [JsonIgnore]
+    public string? UserId { get; set; } = null!;
 
     public string Number { get; set; }
 
@@ -18,8 +21,8 @@ public class CreatePhone
     {
         return new Phone
         {
-            Id = create.Id,
-            UserId = create.UserId,
+            Id = create?.Id,
+            UserId = create?.UserId,
             Number = create.Number,
             CityCode = create.CityCode,
             ContryCode = create.ContryCode,

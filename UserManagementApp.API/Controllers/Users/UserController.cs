@@ -36,7 +36,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("Register")]
-    public async Task<IActionResult> AddAsync([FromForm] CreateUser create, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> AddAsync([FromBody] CreateUser create, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -66,7 +66,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(string id, [FromForm] UpdateUser update, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> UpdateAsync(string id, [FromBody] UpdateUser update, CancellationToken cancellationToken = default)
     {
         try
         {
