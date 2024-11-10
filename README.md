@@ -20,7 +20,14 @@ Para iniciar sesión en el sistema, utiliza las siguientes credenciales de admin
 - **Nombre de usuario:** `User Admin`
 - **Correo electrónico:** `useradmin@gmail.com`
 - **Contraseña:** `Admin009008++`
+- 
+Una vez que inicies sesión, recibirás un Token JWT en la respuesta.
+Para poder autenticarte y acceder a los demás endpoints disponibles en el sistema, es necesario que incluyas este token en el encabezado de autorización como un Bearer Token en Swagger, utilizando el siguiente formato:
 
+    ```bash
+    Bearer {token}
+    ```
+    
 ### **Requisitos Adicionales:**
 - Si ejecutas el proyecto en un entorno local, asegúrate de tener **SQL Server** correctamente instalado y configurado.
 - Si prefieres usar **Docker** para ejecutar el proyecto, asegúrate de contar con **[Docker Desktop](https://www.docker.com/products/docker-desktop)** instalado en tu máquina.
@@ -52,7 +59,7 @@ El Script de la base de datos esta dentro del repositorio
 
 De igual manera puedes hacer un update-database en el Package Manager Console una vez hayas puesto tu connectionString en el AppSettings.Development
 
-Para conectar el proyecto con **SQL Server**, actualiza el archivo `appsettings.json` con la cadena de conexión adecuada:
+Para conectar el proyecto con **SQL Server**, actualiza el archivo `appsettings.json.Development` con la cadena de conexión adecuada:
 
 ```json
 {
