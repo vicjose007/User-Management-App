@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using UserManagementApp.Application.Users.Dtos;
@@ -21,19 +22,30 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
     {
-        return Ok(await _service.GetAllAsync(cancellationToken));
+        try
+        {
+            return Ok(await _service.GetAllAsync(cancellationToken));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [Authorize]
     [HttpGet("get-by-id/{id}")]
     public async Task<IActionResult> GetByIdAsync(string id, CancellationToken cancellationToken = default)
     {
-        var user = await _service.GetByIdAsync(id, cancellationToken);
+        try
+        {
+            var user = await _service.GetByIdAsync(id, cancellationToken);
 
-        if (user is null)
-            return NotFound();
-
-        return Ok(user);
+            return Ok(user);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpPost("register")]

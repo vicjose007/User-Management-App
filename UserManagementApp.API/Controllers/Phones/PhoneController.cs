@@ -20,31 +20,47 @@ public class PhoneController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
     {
-        return Ok(await _service.GetAllAsync(cancellationToken));
+        try
+        {
+            return Ok(await _service.GetAllAsync(cancellationToken));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [Authorize]
     [HttpGet("get-by-id/{id}")]
     public async Task<IActionResult> GetByIdAsync(string id, CancellationToken cancellationToken = default)
     {
-        var phone = await _service.GetByIdAsync(id, cancellationToken);
 
-        if (phone is null)
-            return NotFound();
+        try
+        {
+            var phone = await _service.GetByIdAsync(id, cancellationToken);
 
-        return Ok(phone);
+            return Ok(phone);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [Authorize]
     [HttpGet("get-by-userId/{userId}")]
     public async Task<IActionResult> GetByUserId(string userId, CancellationToken cancellationToken = default)
     {
-        var phone = await _service.GetByUserId(userId, cancellationToken);
+        try
+        {
+            var phone = await _service.GetByUserId(userId, cancellationToken);
 
-        if (phone is null)
-            return NotFound();
-
-        return Ok(phone);
+            return Ok(phone);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [Authorize]
