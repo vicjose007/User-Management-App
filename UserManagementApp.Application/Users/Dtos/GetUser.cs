@@ -15,6 +15,14 @@ public class GetUser
 
     public Roles Role { get; set; }
 
+    public DateTimeOffset Created { get; set; }
+
+    public DateTimeOffset? Updated { get; set; }
+
+    public DateTime? LastLogin { get; set; }
+
+    public bool IsActive { get; set; }
+
     public List<GetPhone> Phones { get; set; }
 }
 

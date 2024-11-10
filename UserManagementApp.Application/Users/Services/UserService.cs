@@ -7,6 +7,7 @@ using UserManagementApp.Application.Phones.Dtos;
 using UserManagementApp.Application.Users.Dtos;
 using UserManagementApp.Application.Users.Interfaces;
 using UserManagementApp.Application.Users.Services.Projections;
+using UserManagementApp.Domain.Enums;
 using UserManagementApp.Domain.Interfaces.Repositories.Users;
 
 namespace UserManagementApp.Application.Users.Services;
@@ -62,9 +63,15 @@ public class UserService : IUserService
 
         LoginResponse response = new()
         {
+            Id = userFind.Id,
             Token = token,
-            User = userFind,
+            Created = userFind.Created,
+            Modified = userFind.Updated,
+            Last_login = userFind.LastLogin,
+            IsActive = userFind.IsActive,
         };
+
+        await UpdateLastLoginDate(userFind.Id);
 
         return response;
 
@@ -72,11 +79,13 @@ public class UserService : IUserService
 
     public async Task<int> AddAsync(CreateUser create, CancellationToken cancellationToken = default)
     {
+        await ValidateUserExists(create.Email);
+
         create.Id = Guid.NewGuid().ToString();
 
-        create.Role = Domain.Enums.Roles.Normal;
+        create.Role = Roles.Normal;
 
-        create.Password = GenerateRandomPassword(create.Name, 6);
+        create.IsActive = true;
 
         await _repository.AddAsync(create, cancellationToken);
 
@@ -92,6 +101,11 @@ public class UserService : IUserService
 
         if (!string.IsNullOrEmpty(update.Name))
             user.Name = update.Name;
+
+        if (!string.IsNullOrEmpty(update.Email))
+            user.Email = update.Email;
+
+        user.Updated = DateTimeOffset.Now;
 
         await _repository.UpdateAsync(user, cancellationToken);
 
@@ -109,11 +123,54 @@ public class UserService : IUserService
         return await _repository.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task<int> UpdateUserActivationAsync(string id, bool isActive, CancellationToken cancellationToken = default)
+    {
+        var user = await _repository.GetByIdAsync(id);
+
+        user.IsActive = isActive;
+
+        await _repository.UpdateAsync(user, cancellationToken);
+
+        return await _repository.SaveChangesAsync(cancellationToken);
+    }
+
     public async Task<int> DeleteAsync(string id, CancellationToken cancellationToken = default)
     {
         var User = await _repository.GetByIdAsync(id);
 
         await _repository.DeleteAsync(User, cancellationToken);
+
+        return await _repository.SaveChangesAsync(cancellationToken);
+    }
+
+    private async Task AddUserPhonesAsync(string userId, List<CreatePhone> dtos, CancellationToken cancellationToken = default)
+    {
+        foreach (var phone in dtos)
+        {
+            phone.UserId = userId;
+
+            await _phoneService.AddAsync(phone, cancellationToken);
+        }
+    }
+
+    private async Task ValidateUserExists(string email, CancellationToken cancellationToken = default)
+    {
+        var userExists = await _repository.Queryable().AnyAsync(u => u.Email == email);
+
+        if (userExists)
+            throw new Exception("El correo ya esta registrado");
+    }
+
+    private async Task<int> UpdateLastLoginDate(string id, CancellationToken cancellationToken = default)
+    {
+        var user = await _repository.GetByIdAsync(id);
+
+        if (user == null)
+            throw new Exception("Este usuario no existe");
+
+        user.LastLogin = DateTime.Now;
+
+        await _repository.UpdateAsync(user, cancellationToken);
 
         return await _repository.SaveChangesAsync(cancellationToken);
     }
@@ -144,6 +201,20 @@ public class UserService : IUserService
 
     }
 
+    public async Task ForgotPasswordAsync(string email)
+    {
+        var user = await GetByUserEmailAsync(email);
+
+        var createUser = new CreateUser
+        {
+            Name = user.Name,
+            Email = user.Email,
+            Password = GenerateRandomPassword(user.Name, 8)
+        };
+
+        await UpdateUserPasswordAsync(user.Id, createUser.Password);
+    }
+
     public static string GenerateRandomPassword(string name, int length)
     {
         string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -167,30 +238,6 @@ public class UserService : IUserService
         }
 
         return new string(password);
-    }
-
-    public async Task ForgotPasswordAsync(string email)
-    {
-        var user = await GetByUserEmailAsync(email); 
-
-        var createUser = new CreateUser
-        {
-            Name = user.Name,
-            Email = user.Email,
-            Password = GenerateRandomPassword(user.Name, 8)
-        };
-
-        await UpdateUserPasswordAsync(user.Id, createUser.Password);
-    }
-
-    private async Task AddUserPhonesAsync(string userId, List<CreatePhone> dtos, CancellationToken cancellationToken = default)
-    {
-        foreach (var phone in dtos)
-        {
-            phone.UserId = userId;
-
-            await _phoneService.AddAsync(phone, cancellationToken);
-        }
     }
 }
 

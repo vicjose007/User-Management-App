@@ -12,4 +12,5 @@ public interface IUserService
     Task<int> UpdateAsync(string id, UpdateUser create, CancellationToken cancellationToken = default);
     Task<int> DeleteAsync(string id, CancellationToken cancellationToken = default);
     Task ForgotPasswordAsync(string email);
+    Task<int> UpdateUserActivationAsync(string id, bool isActive, CancellationToken cancellationToken = default);
 }
