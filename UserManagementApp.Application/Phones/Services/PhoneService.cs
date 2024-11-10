@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using UserManagementApp.Application.Phones.Dtos;
 using UserManagementApp.Application.Phones.Services.Projections;
 using UserManagementApp.Application.Users.Interfaces;
@@ -32,9 +33,11 @@ public class PhoneService : IPhoneService
             .FirstOrDefaultAsync(cancellationToken) ?? throw new Exception($"No Phone found with id: {id}");
     }
 
-    public async Task<List<Phone>> GetByUserId(string userId, CancellationToken cancellationToken = default)
+    public async Task<List<GetPhone>> GetByUserId(string userId, CancellationToken cancellationToken = default)
     {
-        return await _repository.GetByUserId(userId, cancellationToken);
+        var phones = await _repository.GetByUserId(userId, cancellationToken);
+
+        return phones.Select(PhoneProjection.GetAll).ToList();
     }
 
 
