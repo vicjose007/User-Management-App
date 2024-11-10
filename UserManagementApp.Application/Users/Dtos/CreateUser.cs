@@ -15,10 +15,12 @@ public class CreateUser
 
     public string Email { get; set; }
 
-    [JsonIgnore]
-    public string? Password { get; set; }
+    public string Password { get; set; }
 
     public Roles Role { get; set; }
+
+    [JsonIgnore]
+    public bool? IsActive { get; set; }
 
     public List<CreatePhone> Phones { get; set; }
 
@@ -31,6 +33,7 @@ public class CreateUser
             Password = create?.Password,
             Email = create.Email,
             Role = create.Role,
+            LastLogin = DateTime.Now,
                 
         };
     }

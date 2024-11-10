@@ -13,7 +13,11 @@ public class User : Entity
 
     public string Password { get; set; }
 
+    public DateTime? LastLogin { get; set; }
+
     public Roles Role { get; set; }
+
+    public bool IsActive { get; set; }
 
     public List<Phone> Phones { get; set; }
 }

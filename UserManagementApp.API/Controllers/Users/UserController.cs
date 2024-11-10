@@ -82,6 +82,22 @@ public class UserController : ControllerBase
     }
 
     [Authorize]
+    [HttpPut("update-user-activation/{id}")]
+    public async Task<IActionResult> UpdateAsync(string id, bool isActive, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            await _service.UpdateUserActivationAsync(id, isActive);
+
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(string id, CancellationToken cancellationToken = default)
     {

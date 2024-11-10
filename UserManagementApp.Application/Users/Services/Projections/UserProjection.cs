@@ -12,9 +12,13 @@ public static class UserProjection
         new GetUser
         {
             Id = element.Id,
-            Name= element.Name,
-            Email= element.Email,
-            Role= element.Role,
+            Name = element.Name,
+            Email = element.Email,
+            Role = element.Role,
+            Created = element.Created,
+            Updated = element.Updated,
+            IsActive = element.IsActive,
+            LastLogin = element.LastLogin,
             Phones = element.Phones.Select(p => new GetPhone
             {
                 Id = p.Id,
