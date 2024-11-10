@@ -31,7 +31,7 @@ public static class UserProjection
 
         };
 
-    public static Expression<Func<User, GetUser>> GetById { get; } = element =>
+    public static Expression<Func<User, GetUser>> GetMinorDetails { get; } = element =>
     new GetUser
     {
         Id = element.Id,
