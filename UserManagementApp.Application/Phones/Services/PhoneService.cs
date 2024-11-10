@@ -30,7 +30,7 @@ public class PhoneService : IPhoneService
             .AsNoTracking()
             .Where(st => st.Id == id)
             .Select(PhoneProjection.GetAll)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new Exception($"No Phone found with id: {id}");
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new Exception($"Telefono no encontrado con este id: {id}");
     }
 
     public async Task<List<GetPhone>> GetByUserId(string userId, CancellationToken cancellationToken = default)

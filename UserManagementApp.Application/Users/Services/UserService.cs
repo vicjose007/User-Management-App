@@ -39,7 +39,7 @@ public class UserService : IUserService
             .AsNoTracking()
             .Where(st => st.Id == id)
             .Select(UserProjection.GetAll)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new Exception($"No user found with id: {id}");
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new Exception($"Usuario no encontrado con este id: {id}");
     }
 
     public async Task<GetUser> GetByUserEmailAsync(string email, CancellationToken cancellationToken = default)
@@ -48,7 +48,7 @@ public class UserService : IUserService
             .AsNoTracking()
             .Where(st => st.Email == email)
             .Select(UserProjection.GetAll)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new Exception($"No user found with email: {email}");
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new Exception($"Usuario no encontrado con este correo: {email}");
     }
 
     public async Task<LoginResponse> Login(LoginRequest request, CancellationToken cancellationToken = default)

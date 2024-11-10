@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -6,6 +7,8 @@ using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 using UserManagementApp.API.Config;
 using UserManagementApp.Application;
+using UserManagementApp.Application.Phones.Dtos;
+using UserManagementApp.Application.Users.Dtos;
 using UserManagementApp.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,7 +27,8 @@ builder.Services
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-});
+}).AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<CreateUser>())
+.AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<CreatePhone>());
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
