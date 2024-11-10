@@ -1,4 +1,5 @@
-﻿using UserManagementApp.Domain.Entities.Users;
+﻿using UserManagementApp.Domain.Entities;
+using UserManagementApp.Domain.Entities.Users;
 
 namespace UserManagementApp.Domain.Interfaces.Repositories.Users;
 
