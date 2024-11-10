@@ -26,7 +26,7 @@ public class PhoneController : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(new { mensaje = e.Message });
         }
     }
 
@@ -43,7 +43,7 @@ public class PhoneController : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(new { mensaje = e.Message });
         }
     }
 
@@ -59,7 +59,7 @@ public class PhoneController : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(new { mensaje = e.Message });
         }
     }
 
@@ -75,7 +75,7 @@ public class PhoneController : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(new { mensaje = e.Message });
         }
     }
 
@@ -90,7 +90,7 @@ public class PhoneController : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(new { mensaje = e.Message });
         }
     }
 
@@ -105,7 +105,7 @@ public class PhoneController : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(new { mensaje = e.Message });
         }
     }
 }
